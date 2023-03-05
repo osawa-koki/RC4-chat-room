@@ -8,6 +8,16 @@ namespace rc4_chat_room
 
       builder.Services.AddSignalR();
 
+      var MyCORS = "MyCORS";
+      builder.Services.AddCors(options =>
+      {
+        options.AddPolicy(name: MyCORS,
+          policy =>
+          {
+            policy.WithOrigins("*");
+          });
+      });
+
       var app = builder.Build();
 
       // Configure the HTTP request pipeline.
@@ -15,6 +25,7 @@ namespace rc4_chat_room
       {
         app.UseExceptionHandler("/Error");
       }
+      app.UseCors(MyCORS);
       app.UseStaticFiles();
 
       app.UseRouting();
