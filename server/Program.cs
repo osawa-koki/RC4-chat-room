@@ -1,4 +1,4 @@
-namespace server
+namespace rc4_chat_room
 {
   public class Program
   {
