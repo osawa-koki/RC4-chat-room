@@ -6,8 +6,7 @@ namespace rc4_chat_room
     {
       var builder = WebApplication.CreateBuilder(args);
 
-      // Add services to the container.
-      builder.Services.AddRazorPages();
+      builder.Services.AddSignalR();
 
       var app = builder.Build();
 
@@ -19,10 +18,7 @@ namespace rc4_chat_room
       app.UseStaticFiles();
 
       app.UseRouting();
-
-      app.UseAuthorization();
-
-      app.MapRazorPages();
+      app.MapHub<ChatHub>("/chatHub");
 
       app.Run();
     }
