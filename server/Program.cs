@@ -14,7 +14,7 @@ namespace rc4_chat_room
         options.AddPolicy(name: MyCORS,
           policy =>
           {
-            policy.WithOrigins("*");
+            policy.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
           });
       });
 
@@ -26,6 +26,7 @@ namespace rc4_chat_room
         app.UseExceptionHandler("/Error");
       }
       app.UseCors(MyCORS);
+      app.UseStaticFiles();
       app.UseStaticFiles();
 
       app.UseRouting();
