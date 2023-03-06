@@ -6,7 +6,7 @@ namespace rc4_chat_room
   {
     public async Task SendMessage(string user, string message)
     {
-      await Clients.All.SendAsync("ReceiveMessage", user, message);
+      await Clients.All.SendAsync("ReceiveMessage", user, message, DateTime.Now);
     }
   }
 }

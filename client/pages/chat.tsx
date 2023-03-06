@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 import { Button, Alert, Form, Table } from 'react-bootstrap';
 import Layout from "../components/Layout";
@@ -6,11 +7,57 @@ import Layout from "../components/Layout";
 import { DataContext } from "../src/DataContext";
 import { Message } from "../src/Interface";
 import { encrypt, decrypt } from "../src/RC4";
+import setting from "../setting";
 
 export default function ChatPage() {
 
   const [messages, setMessages] = useState<Message[]>([]);
+  const [connection, setConnection] = useState(null);
+  const [ready, setReady] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const { sharedData, setSharedData } = React.useContext(DataContext);
+
+  useEffect(() => {
+    const newConnection = new HubConnectionBuilder()
+      .withUrl(`${setting.apiPath}/chatHub`)
+      .build();
+    setConnection(newConnection);
+  }, []);
+
+  useEffect(() => {
+    if (connection === null) return;
+    connection
+    .start()
+    .then(() => {
+      setReady(true);
+    })
+    .catch((err: Error) => {
+      setError(`Connection failed: ${err}`);
+    });
+  }, [connection]);
+
+  useEffect(() => {
+    if (connection === null) {
+      setError("Connection is empty.");
+      return;
+    }
+    connection.on("ReceiveMessage", (username: string, message: string) => {
+      setMessages([{ username, message } as Message, ...messages]);
+    });
+  }, [connection, messages]);
+
+  const Send = () => {
+    if (connection === null) {
+      setError("Connection is empty.");
+    }
+    connection
+      .invoke("SendMessage", sharedData.username, sharedData.message)
+      .then(() => {
+      })
+      .catch((err: Error) => {
+        setError(`Send failed: ${err}`);
+      });
+  };
 
   return (
     <Layout>
@@ -41,9 +88,17 @@ export default function ChatPage() {
             <Form.Label>Encrypted Message</Form.Label>
             <Form.Control as="textarea" rows={3} value={encrypt(sharedData.message, sharedData.key)} disabled />
           </Form.Group>
-          <Button variant="primary" className="mt-3 d-block m-auto">Send 📨</Button>
+          <Button variant="primary" className="mt-3 d-block m-auto" onClick={Send}>Send 📨</Button>
         </Form>
         <hr />
+        {
+          error !== null && (
+            <Alert variant="danger">
+              <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+              <p>{error}</p>
+            </Alert>
+          )
+        }
         <Table striped bordered hover className="mt-3">
           <thead>
             <tr>
@@ -57,7 +112,7 @@ export default function ChatPage() {
               return (
                 <tr key={index}>
                   <td>{message.username}</td>
-                  <td>{message.message}</td>
+                  <td>{decrypt(message.message, sharedData.key)}</td>
                   <td>{message.datetime.toString()}</td>
                 </tr>
               )
