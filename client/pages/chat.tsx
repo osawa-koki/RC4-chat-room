@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
-import { Button, Alert, Form } from 'react-bootstrap';
+import { Button, Alert, Form, Table } from 'react-bootstrap';
 import Layout from "../components/Layout";
 
 import { DataContext } from "../src/DataContext";
+import { Message } from "../src/Interface";
 
 export default function ChatPage() {
 
+  const [messages, setMessages] = useState<Message[]>([]);
   const { sharedData, setSharedData } = React.useContext(DataContext);
 
   return (
@@ -40,6 +42,27 @@ export default function ChatPage() {
           </Form.Group>
           <Button variant="primary" className="mt-3 d-block m-auto">Send 📨</Button>
         </Form>
+        <hr />
+        <Table striped bordered hover className="mt-3">
+          <thead>
+            <tr>
+              <th className="w-25">username</th>
+              <th className="w-50">message</th>
+              <th className="w-25">datetime</th>
+            </tr>
+          </thead>
+          <tbody>
+            {messages.map((message, index) => {
+              return (
+                <tr key={index}>
+                  <td>{message.username}</td>
+                  <td>{message.message}</td>
+                  <td>{message.datetime.toString()}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </Table>
       </div>
     </Layout>
   );
