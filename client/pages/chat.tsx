@@ -36,7 +36,7 @@ export default function ChatPage() {
           </Form.Group>
           <Form.Group className="mt-3">
             <Form.Label>Encrypted Message</Form.Label>
-            <Form.Control as="textarea" rows={3} value={sharedData.message} readOnly />
+            <Form.Control as="textarea" rows={3} value={sharedData.message} disabled />
           </Form.Group>
           <Button variant="primary" className="mt-3 d-block m-auto">Send 📨</Button>
         </Form>
