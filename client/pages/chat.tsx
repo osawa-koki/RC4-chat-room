@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
-import { Button, Alert, Form, Table } from 'react-bootstrap';
+import { Button, Alert, Form, Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Layout from "../components/Layout";
 
 import { DataContext } from "../src/DataContext";
@@ -93,9 +93,29 @@ export default function ChatPage() {
             <Form.Label>Encrypted Message</Form.Label>
             <Form.Control as="textarea" rows={3} value={encrypt(sharedData.message, sharedData.key)} disabled />
           </Form.Group>
-          <Button variant="primary" className="mt-3 d-block m-auto" onClick={Send} disabled={
-            ready === false || CheckAllStringsAreNonEmpty(sharedData.username, sharedData.message) === false
-          }>Send 📨</Button>
+          <div className="d-flex justify-content-center">
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 250, hide: 400 }}
+              overlay={(props) => {
+                return (
+                  ready === false || CheckAllStringsAreNonEmpty(sharedData.username, sharedData.message) === false ? (
+                    <Tooltip {...props}>
+                      {ready === false && <div>Connection is not ready.</div>}
+                      {CheckAllStringsAreNonEmpty(sharedData.username) === false && <div>Username is empty.</div>}
+                      {CheckAllStringsAreNonEmpty(sharedData.message) === false && <div>Message is empty.</div>}
+                    </Tooltip>
+                  ) : (<></>)
+                )
+              }}
+            >
+              <div>
+              <Button variant="primary" className="mt-3 m-auto" onClick={Send} disabled={
+                ready === false || CheckAllStringsAreNonEmpty(sharedData.username, sharedData.message) === false
+              }>Send 📨</Button>
+              </div>
+            </OverlayTrigger>
+          </div>
         </Form>
         <hr />
         {
