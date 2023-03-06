@@ -25,33 +25,34 @@ export default function ChatPage() {
   }, []);
 
   useEffect(() => {
-    if (connection) {
-      connection
-        .start()
-        .then(() => {
-          setReady(true);
-        })
-        .catch((err: Error) => {
-          setError(`${err}`);
-        });
-    }
+    if (!connection) return;
+    connection
+      .start()
+      .then(() => {
+        setReady(true);
+      })
+      .catch((err: Error) => {
+        setError(`${err}`);
+      });
   }, [connection]);
 
   useEffect(() => {
-    if (connection === null) return;
+    if (!connection) return;
+    console.log(1);
     connection.on("ReceiveMessage", (user: string, message: string) => {
       const newMessage = {
         username: user,
         message: message,
         datetime: new Date(),
       };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      setMessages([newMessage, ...messages]);
     });
   }, [connection, messages]);
 
   const Send = () => {
     if (connection === null) {
       setError("Connection is empty.");
+      return;
     }
     connection
       .invoke("SendMessage", sharedData.username, encrypt(sharedData.message, sharedData.key))
@@ -91,7 +92,7 @@ export default function ChatPage() {
             <Form.Label>Encrypted Message</Form.Label>
             <Form.Control as="textarea" rows={3} value={encrypt(sharedData.message, sharedData.key)} disabled />
           </Form.Group>
-          <Button variant="primary" className="mt-3 d-block m-auto" onClick={Send}>Send 📨</Button>
+          <Button variant="primary" className="mt-3 d-block m-auto" onClick={Send} disabled={ready === false}>Send 📨</Button>
         </Form>
         <hr />
         {
