@@ -17,11 +17,26 @@ import setting from '../setting';
 import { DataContext } from '../src/DataContext';
 import SharedData from '../src/SharedData';
 
+const key_prefixes = [
+  'beautiful',
+  'cute',
+  'lovely',
+];
+const key_contents = [
+  'dolphin',
+  'cat',
+  'dog',
+  'bird',
+  'fish',
+];
+const key = `${key_prefixes[Math.floor(Math.random() * key_prefixes.length)]} ${key_contents[Math.floor(Math.random() * key_contents.length)]}`;
+
 export default function MyApp({ Component, pageProps }: AppProps) {
 
   const [sharedData, setSharedData] = useState<SharedData>({
     username: '',
-    email: 'osawa-koki@example.com',
+    key: key,
+    message: 'Hello World',
   });
 
   return (

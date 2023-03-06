@@ -1,6 +1,7 @@
 type SharedData = {
   username: string;
-  email: string;
+  key: string;
+  message: string;
 };
 
 export default SharedData;

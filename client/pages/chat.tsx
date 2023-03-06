@@ -3,46 +3,39 @@ import React, { useState } from "react";
 import { Button, Alert, Form } from 'react-bootstrap';
 import Layout from "../components/Layout";
 
-import PageBlock from "../components/Menu";
 import { DataContext } from "../src/DataContext";
 
-const mail_regex = new RegExp(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/);
+export default function ChatPage() {
 
-export default function HelloWorld() {
-
-  const [count, setCount] = useState(0);
   const { sharedData, setSharedData } = React.useContext(DataContext);
 
   return (
     <Layout>
-      <div id="Contact">
-        <h1>Dummy Contact.</h1>
-        <PageBlock />
-        <hr />
-        <p>仮想DOMによってJSで管理しているデータを中心にHTMLを生成することができます。<br /><br />`AddEventListener`や`JQuery(&quot;***&quot;).on`なんて使いません。<br /><br />ちなみに、Next.js(React)は単方向バインディングであるため、HTMLをそのまま操作することはせずに、JSによるデータを操作することで描写するHTMLを制御します。<br /><br />この点がVue.jsやAngularと異なります。<br /><br />また、react-bootstrapによるBootstrapのサポートがあるため、簡単にBootstrapを導入できます。</p>
-        <hr />
-        <Alert variant="info">You cliecked { count } times 🤣🤣🤣</Alert>
-        <Button variant="primary" onClick={() => {setCount(count + 1)}}>Click Me {((count % 3 === 0 && count !== 0) || /3/.test(count.toString()) ? '🤪' : '😀')}</Button>
-        <hr />
-        <Form.Group controlId="formBasicEmail" className="mt-3">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" value={sharedData.email} onInput={(e) => {
-            setSharedData({
-              ...sharedData,
-              email: (e.target as HTMLInputElement).value,
-            });
-          }} />
-          <Form.Text>
-            We&apos;ll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-        {
-          mail_regex.test(sharedData.email) ? (
-            <Alert variant="success">Your email is valid.</Alert>
-          ) : (
-            <Alert variant="danger">Your email is invalid.</Alert>
-          )
-        }
+      <div id="Chat">
+        <h1>RC4 Chat Room 🏠</h1>
+        <Form>
+          <Form.Group className="mt-3 d-flex justify-content-between">
+            <Form.Group className="w-50">
+              <Form.Label>Username</Form.Label>
+              <Form.Control type="text" placeholder="Enter username" value={sharedData.username} onInput={(e) => {
+                setSharedData({ ...sharedData, username: e.currentTarget.value });
+              }} />
+            </Form.Group>
+            <Form.Group className="w-50">
+              <Form.Label>Key</Form.Label>
+              <Form.Control type="text" placeholder="Enter key" value={sharedData.key} onInput={(e) => {
+                setSharedData({ ...sharedData, key: e.currentTarget.value });
+              }} />
+            </Form.Group>
+          </Form.Group>
+          <Form.Group className="mt-3">
+            <Form.Label>Message</Form.Label>
+            <Form.Control as="textarea" rows={3} value={sharedData.message} onInput={(e) => {
+              setSharedData({ ...sharedData, message: e.currentTarget.value });
+            }} />
+          </Form.Group>
+          <Button variant="primary" className="mt-3 d-block m-auto">Send 📨</Button>
+        </Form>
       </div>
     </Layout>
   );
