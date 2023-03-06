@@ -1,0 +1,77 @@
+name: Run tests, linting, and prettify
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  client_directory: ./client
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+
+jobs:
+  test-lint-prettify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
+    - name: Install dependencies
+      run: yarn install
+      working-directory: ${{ env.client_directory }}
+
+    - name: Run tests
+      run: yarn test
+      working-directory: ${{ env.client_directory }}
+
+    - name: Run linter
+      run: yarn lint
+      working-directory: ${{ env.client_directory }}
+
+    - name: Prettify code
+      run: |
+        yarn prettify --check
+        CHANGES=$(git status --porcelain)
+        if [ -n "$CHANGES" ]; then
+          git config --global user.email "${{ github.actor }}@github.com"
+          git config --global user.name "BOT.${{ github.actor }}"
+          git add -A
+          git commit -m "Prettify code with yarn prettify"
+          git push "https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY" "$GITHUB_REF"
+        fi
+      working-directory: ${{ env.client_directory }}
+
+    - name: Upgrade packages
+      run: |
+        yarn upgrade
+        CHANGES=$(git status --porcelain)
+        if [ -n "$CHANGES" ]; then
+          git config --global user.email "${{ github.actor }}@github.com"
+          git config --global user.name "BOT.${{ github.actor }}"
+          git add -A
+          git commit -m "Upgrade packages with yarn upgrade"
+          git push "https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY" "$GITHUB_REF"
+        fi
+      working-directory: ${{ env.client_directory }}
+
+    - name: Check outdated packages
+      run: yarn outdated
+      working-directory: ${{ env.client_directory }}
+
+    - name: Check for security vulnerabilities
+      run: yarn audit
+      working-directory: ${{ env.client_directory }}
+
+    - name: Run tests again
+      run: yarn test
+      working-directory: ${{ env.client_directory }}
