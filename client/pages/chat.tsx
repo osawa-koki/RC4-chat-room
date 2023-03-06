@@ -9,6 +9,7 @@ import { Message } from "../src/Interface";
 import { encrypt, decrypt } from "../src/RC4";
 import setting from "../setting";
 import GetTimeStamp from "../src/GetTimeStamp";
+import CheckAllStringsAreNonEmpty from "../src/CheckAllStringsAreNonEmpty";
 
 export default function ChatPage() {
 
@@ -92,7 +93,9 @@ export default function ChatPage() {
             <Form.Label>Encrypted Message</Form.Label>
             <Form.Control as="textarea" rows={3} value={encrypt(sharedData.message, sharedData.key)} disabled />
           </Form.Group>
-          <Button variant="primary" className="mt-3 d-block m-auto" onClick={Send} disabled={ready === false}>Send 📨</Button>
+          <Button variant="primary" className="mt-3 d-block m-auto" onClick={Send} disabled={
+            ready === false || CheckAllStringsAreNonEmpty(sharedData.username, sharedData.message) === false
+          }>Send 📨</Button>
         </Form>
         <hr />
         {
