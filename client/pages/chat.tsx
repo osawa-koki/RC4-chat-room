@@ -8,6 +8,7 @@ import { DataContext } from "../src/DataContext";
 import { Message } from "../src/Interface";
 import { encrypt, decrypt } from "../src/RC4";
 import setting from "../setting";
+import GetTimeStamp from "../src/GetTimeStamp";
 
 export default function ChatPage() {
 
@@ -117,7 +118,7 @@ export default function ChatPage() {
                 <tr key={index}>
                   <td>{message.username}</td>
                   <td>{decrypt(message.message, sharedData.key)}</td>
-                  <td>{message.datetime.toString()}</td>
+                  <td>{GetTimeStamp(message.datetime)}</td>
                 </tr>
               )
             })}
