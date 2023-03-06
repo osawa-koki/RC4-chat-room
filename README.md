@@ -4,6 +4,13 @@
 
 ![成果物](./docs/img/fruit.gif)  
 
+## 実行方法
+
+```shell
+docker build -t rc4-chat-room .
+docker run -itd -p 8000:8000 --name my-rc4-chat-room rc4-chat-room
+```
+
 ## 開発環境の構築
 
 ### クライアント
