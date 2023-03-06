@@ -34,6 +34,10 @@ export default function ChatPage() {
               setSharedData({ ...sharedData, message: e.currentTarget.value });
             }} />
           </Form.Group>
+          <Form.Group className="mt-3">
+            <Form.Label>Encrypted Message</Form.Label>
+            <Form.Control as="textarea" rows={3} value={sharedData.message} readOnly />
+          </Form.Group>
           <Button variant="primary" className="mt-3 d-block m-auto">Send 📨</Button>
         </Form>
       </div>
