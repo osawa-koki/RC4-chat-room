@@ -39,7 +39,6 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!connection) return;
-    console.log(1);
     connection.on("ReceiveMessage", (user: string, message: string) => {
       const newMessage = {
         username: user,
