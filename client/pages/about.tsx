@@ -5,7 +5,17 @@ export default function AboutPage() {
   return (
     <Layout>
       <div id="About">
-        <h1>RC4? What&apos;s that???</h1>
+        <h1>About</h1>
+        <h2>What can you do here???</h2>
+        <p className="mt-3">
+          このサイトでは、RC4暗号を用いてメッセージを暗号化し、暗号化されたメッセージを送信することができます。<br />
+          また、暗号化されたメッセージを受信することもできます。<br />
+          <br />
+          これは、送信者が暗号化に使用した暗号化キーを保有している場合にのみ復号です。<br />
+          異なる暗号化キーを使用して暗号化されたメッセージは、復号できません。<br />
+        </p>
+        <hr />
+        <h2>RC4? What&apos;s that???</h2>
         <p className="mt-3">
           「RC4」は、ストリーム暗号アルゴリズムの一種であり、1987年にロナルド・リベストが開発しました。<br />
           <br />
