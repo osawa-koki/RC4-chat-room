@@ -6,7 +6,7 @@ export default function AboutPage() {
     <Layout>
       <div id="About">
         <h1>About</h1>
-        <h2>What can you do here???</h2>
+        <h2>What can I do here???</h2>
         <p className="mt-3">
           このサイトでは、RC4暗号を用いてメッセージを暗号化し、暗号化されたメッセージを送信することができます。<br />
           また、暗号化されたメッセージを受信することもできます。<br />
