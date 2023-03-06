@@ -32,7 +32,7 @@ namespace rc4_chat_room
       app.UseRouting();
       app.MapHub<ChatHub>("/chatHub");
 
-      app.Run("http://0.0.0.0.8000");
+      app.Run("http://0.0.0.0:8000");
     }
   }
 }

@@ -25,24 +25,27 @@ export default function ChatPage() {
   }, []);
 
   useEffect(() => {
-    if (connection === null) return;
-    connection
-    .start()
-    .then(() => {
-      setReady(true);
-    })
-    .catch((err: Error) => {
-      setError(`Connection failed: ${err}`);
-    });
+    if (connection) {
+      connection
+        .start()
+        .then(() => {
+          setReady(true);
+        })
+        .catch((err: Error) => {
+          setError(`${err}`);
+        });
+    }
   }, [connection]);
 
   useEffect(() => {
-    if (connection === null) {
-      setError("Connection is empty.");
-      return;
-    }
-    connection.on("ReceiveMessage", (username: string, message: string) => {
-      setMessages([{ username, message } as Message, ...messages]);
+    if (connection === null) return;
+    connection.on("ReceiveMessage", (user: string, message: string) => {
+      const newMessage = {
+        username: user,
+        message: message,
+        datetime: new Date(),
+      };
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
   }, [connection, messages]);
 
@@ -51,7 +54,7 @@ export default function ChatPage() {
       setError("Connection is empty.");
     }
     connection
-      .invoke("SendMessage", sharedData.username, sharedData.message)
+      .invoke("SendMessage", sharedData.username, encrypt(sharedData.message, sharedData.key))
       .then(() => {
       })
       .catch((err: Error) => {
