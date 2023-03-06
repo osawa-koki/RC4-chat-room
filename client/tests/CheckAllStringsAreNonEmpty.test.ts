@@ -4,24 +4,24 @@ describe('CheckAllStringsAreNonEmpty', () => {
   const testCases = [
     {
       args: ['hello', 'world'],
-      expected: true
+      expected: true,
     },
     {
       args: ['a', 'b', 'c'],
-      expected: true
+      expected: true,
     },
     {
       args: [''],
-      expected: false
+      expected: false,
     },
     {
       args: [' ', ' ', ' '],
-      expected: true
+      expected: true,
     },
     {
       args: ['a', '', 'b', 'c'],
-      expected: false
-    }
+      expected: false,
+    },
   ];
 
   testCases.forEach(({ args, expected }) => {
