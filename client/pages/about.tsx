@@ -5,7 +5,7 @@ export default function AboutPage() {
   return (
     <Layout>
       <div id="About">
-        <h1>RC4? What&apos;s taht???</h1>
+        <h1>RC4? What&apos;s that???</h1>
         <p className="mt-3">
           「RC4」は、ストリーム暗号アルゴリズムの一種であり、1987年にロナルド・リベストが開発しました。<br />
           <br />
