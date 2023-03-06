@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 
 import { DataContext } from "../src/DataContext";
 import { Message } from "../src/Interface";
+import { encrypt, decrypt } from "../src/RC4";
 
 export default function ChatPage() {
 
@@ -38,7 +39,7 @@ export default function ChatPage() {
           </Form.Group>
           <Form.Group className="mt-3">
             <Form.Label>Encrypted Message</Form.Label>
-            <Form.Control as="textarea" rows={3} value={sharedData.message} disabled />
+            <Form.Control as="textarea" rows={3} value={encrypt(sharedData.message, sharedData.key)} disabled />
           </Form.Group>
           <Button variant="primary" className="mt-3 d-block m-auto">Send 📨</Button>
         </Form>
