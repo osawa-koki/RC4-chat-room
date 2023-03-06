@@ -1,4 +1,4 @@
-namespace server
+namespace rc4_chat_room
 {
   public class Program
   {
@@ -6,8 +6,17 @@ namespace server
     {
       var builder = WebApplication.CreateBuilder(args);
 
-      // Add services to the container.
-      builder.Services.AddRazorPages();
+      builder.Services.AddSignalR();
+
+      var MyCORS = "MyCORS";
+      builder.Services.AddCors(options =>
+      {
+        options.AddPolicy(name: MyCORS,
+          policy =>
+          {
+            policy.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+          });
+      });
 
       var app = builder.Build();
 
@@ -16,15 +25,14 @@ namespace server
       {
         app.UseExceptionHandler("/Error");
       }
+      app.UseCors(MyCORS);
+      app.UseDefaultFiles();
       app.UseStaticFiles();
 
       app.UseRouting();
+      app.MapHub<ChatHub>("/chatHub");
 
-      app.UseAuthorization();
-
-      app.MapRazorPages();
-
-      app.Run();
+      app.Run("http://0.0.0.0:8000");
     }
   }
 }

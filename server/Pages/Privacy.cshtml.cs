@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace server.Pages
+namespace rc4_chat_room.Pages
 {
   public class PrivacyModel : PageModel
   {
