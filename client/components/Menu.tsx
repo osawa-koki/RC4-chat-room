@@ -25,7 +25,7 @@ function Menu() {
       {
         pages.map((page, index: number) => {
           return (
-            <Link key={index} href={page.path} className={`btn ${current_page === `${setting.basePath}${page.path}` ? 'btn-primary' : ''}`} onClick={PageChanged}>
+            <Link key={index} href={page.path} className={`btn ${current_page === `${setting.basePath}${page.path}` ? 'btn-light current' : ''}`} onClick={PageChanged}>
               {page.emoji}&nbsp;{page.name}
             </Link>
           )
